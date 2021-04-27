@@ -1,0 +1,123 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+#shopping-update-btn {
+  background-color: red;
+  color: blue;
+}
+
+#shopping-update-btn:hover {
+  background-color: skyblue;
+  color: white;
+}
+
+#shopping-delete-btn {
+  background-color: red;
+  width: 70px;
+  justify-content: center;
+}
+
+#shopping-delete-btn:hover {
+  background-color: white;
+  color: red;
+  border: 1px solid red;
+}
+
+#item-container {
+  height: 20vh;
+  border: 1px solid lightgray;
+}
+
+#update-btn:hover {
+  background-color: white;
+  color: #1f9bcf;
+  border: 1px solid #1f9bcf;
+}
+
+#minus-btn:hover {
+  color: black;
+  box-shadow: -3px 3px 15px 1px lightgray;
+}
+
+#add-btn:hover {
+  color: black;
+  box-shadow: 3px 3px 15px 1px lightgray;
+}
+
+.bodyback {
+  @apply bg-gray-200;
+}
+
+.tabrow {
+  text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
+  position: relative;
+}
+.tabrow:before {
+  z-index: 1;
+}
+.tabrow:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 0;
+
+  z-index: 1;
+}
+
+.tabrow li {
+  margin: 0 -5px 0px 0px;
+  padding: 0 20px;
+  border: 1px solid #aaa;
+
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  @apply bg-yellow-500 text-white font-thin;
+}
+
+.tabrow li.selected {
+  background: #fff;
+  text-shadow: none;
+  z-index: 2;
+  border-bottom-color: #fff;
+  @apply text-blue-600 font-extrabold;
+}
+
+.tabrow li.selected:before {
+  position: absolute;
+  bottom: -1px;
+  width: 6px;
+  height: 6px;
+  content: " ";
+  left: -6px;
+  border: 1px solid #aaa;
+  border-bottom-right-radius: 9px;
+  border-width: 0 1px 1px 0;
+  box-shadow: 2px 1px 0 #fff;
+}
+
+.tabrow li.selected:after {
+  position: absolute;
+  bottom: -1px;
+  width: 6px;
+  height: 6px;
+  content: " ";
+  right: -6px;
+  border: 1px solid #aaa;
+  border-bottom-left-radius: 9px;
+  border-width: 0 0 1px 1px;
+  box-shadow: -2px 1px 0 #fff;
+}
+
+.tabrow li.add {
+  z-index: 0;
+  @apply bg-blue-400 bg-opacity-90 text-white font-thin;
+}

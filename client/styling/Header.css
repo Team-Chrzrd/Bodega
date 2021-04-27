@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: skyblue;
+  width: 100%;
+  padding: 20px 10px 20px 10px;
+}
+
+.logo {
+  display: flex;
+  justify-content: space-between;
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: "Anton", sans-serif;
+  font-size: x-large;
+}
+
+/* .header-title {
+    font-family: 'Anton', sans-serif;
+    font-size: x-large;
+    align-items: flex-start;
+} */
+
+/* .header-title img {
+    display: flex;
+    justify-content: space-between;
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+} */
+
+.btn-left {
+  border: solid;
+  background: #45b6fe;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  margin-right: 10px;
+}
+
+.btn-right {
+  border: solid;
+  background: #3792cb;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  margin-right: 10px;
+}
