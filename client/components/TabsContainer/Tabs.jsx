@@ -18,10 +18,10 @@ export const Tabs = () => {
   return (
     <div className="flex justify-start ml-4">
       <ul className="tabrow">
-        <li className={`${showShopping ? "selected" : null}`} onClick={toggle}>
+        <li className={`${showShopping ? "selected" : null} shoppingListTab`} onClick={toggle}>
           Shopping List
         </li>
-        <li className={`${showPantry ? "selected" : null}`} onClick={toggle}>
+        <li className={`${showPantry ? "selected" : null} pantryTab`} onClick={toggle}>
           Pantry
         </li>
         <li className="add ">+</li>

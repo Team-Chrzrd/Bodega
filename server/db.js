@@ -5,6 +5,7 @@ dotenv.config();
 
 const dbconfig = {
   connectionString: process.env.PG_URI,
+  max: 5,
 };
 
 console.log(dbconfig);

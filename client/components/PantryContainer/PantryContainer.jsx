@@ -23,7 +23,7 @@ const PantryContainer = () => {
 
   return (
     <div>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-white shadow overflow-hidden sm:rounded-md PantryContainer">
         <ul className="divide-y divide-gray-200">
           {pantryItems
             .sort((a, b) => sortItem(a, b))

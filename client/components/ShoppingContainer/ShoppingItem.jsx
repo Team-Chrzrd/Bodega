@@ -27,12 +27,12 @@ const ShoppingItem = ({ newItem }) => {
   return (
     <>
       <li>
-        <div className=" flex flex-row justify-between px-4 py-4 sm:px-6">
+        <div className={ `flex flex-row justify-between px-4 py-4 sm:px-6 shoppingItem${item_name}`}>
           <div className="flex flex-column items-center justify-between w-1/4">
-            <p className="flex items-center text-sm text-gray-500">
+            <p className="flex items-center text-sm text-gray-500 category">
               {category}
             </p>
-            <p className="text-lg font-bold text-blue-700 truncate">
+            <p className="text-lg font-bold text-blue-700 truncate item_name">
               {item_name}
             </p>
 
@@ -49,14 +49,14 @@ const ShoppingItem = ({ newItem }) => {
                 <strong>Cart Qty</strong>
               </div>
               <div className="flex flex-row justify-center items-center">
-                <div className="text-3xl font-semibold text-blue-700  truncate">
+                <div className={`text-3xl font-semibold text-blue-700  truncate cartQuantity${item_name}`}>
                   {buy_qty}
                 </div>
                 <div className="ml-3">{unit}</div>
               </div>
-              <div className="flex flex-row">
-                <MinusBuyButton _id={_id} />
-                <AddBuyButton _id={_id} />
+              <div className={`flex flex-row addMinus${item_name}`}>
+                <MinusBuyButton _id={_id} item_name={item_name} />
+                <AddBuyButton _id={_id} item_name={item_name} />
               </div>
             </div>
 
@@ -65,21 +65,21 @@ const ShoppingItem = ({ newItem }) => {
                 <strong>Required Qty</strong>
               </div>
               <div className="flex flex-row justify-center items-center">
-                <div className="text-3xl font-semibold text-blue-700  truncate">
+                <div className={`text-3xl font-semibold text-blue-700  truncate reqQuantity${item_name}`}>
                   {list_qty}
                 </div>
                 <div className="ml-3">{unit}</div>
               </div>
               <div className="flex flex-row">
-                <MinusListButton _id={_id} />
-                <AddListButton _id={_id} />
+                <MinusListButton _id={_id} item_name={item_name} />
+                <AddListButton _id={_id} item_name={item_name} />
               </div>
             </div>
           </div>
 
           <div className=" flex flex-column justify-center items-center mt-2 pr-5">
-            <UpdateButton item={newItem} />
-            <DeleteButton _id={_id} />
+            <UpdateButton item={newItem} _id={_id} item_name={item_name}/>
+            <DeleteButton _id={_id} item_name={item_name}/>
           </div>
         </div>
       </li>
