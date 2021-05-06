@@ -1,22 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useMutation, gql } from '@apollo/react-hooks';
-
-const SHOPPING_LIST_DOWN = gql`
-  mutation ShoppingListDown($itemId: Int!) {
-    shoppingListDown(itemId: $itemId) {
-      success
-    }
-  }
-`;
+import { SHOPPING_LIST_DOWN } from '../../Queries/Queries';
+import useShoppingActions from '../../hooks/useShoppingActions';
 
 //Decrements list QTY
-const MinusListButton = ({ _id, refreshItems }) => {
-  const dispatch = useDispatch();
+const MinusListButton = ({ _id }) => {
+  const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingListDown] = useMutation(SHOPPING_LIST_DOWN, {
     onCompleted: () => {
-      refreshItems();
+      refreshShoppingItems();
     },
   });
 

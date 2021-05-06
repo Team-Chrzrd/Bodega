@@ -1,22 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useMutation, gql } from '@apollo/react-hooks';
-
-const SHOPPING_REMOVE = gql`
-  mutation ShoppingRemove($itemId: Int!) {
-    shoppingRemove(itemId: $itemId) {
-      success
-    }
-  }
-`;
+import { SHOPPING_REMOVE } from '../../Queries/Queries';
+import useShoppingActions from '../../hooks/useShoppingActions';
 
 //Deletes single item from shopping list
 const DeleteButton = ({ _id, refreshItems }) => {
-  const dispatch = useDispatch();
+  const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingRemove] = useMutation(SHOPPING_REMOVE, {
     onCompleted: () => {
-      refreshItems();
+      refreshShoppingItems();
     },
   });
 

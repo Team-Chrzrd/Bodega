@@ -1,56 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery, useMutation, gql } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
-import { updateShoppingItem } from '../../store/actions/shoppingActions.js';
 import {
   addPantryItem,
   updatePantryItem,
 } from '../../store/actions/pantryActions.js';
 import { displayEditor } from '../../store/actions/uiActions.js';
 import useShoppingActions from '../../hooks/useShoppingActions';
-
-const SHOPPING_SUBMIT = gql`
-  mutation shopSub(
-    $itemName: String!
-    $note: String
-    $unit: String
-    $category: String
-    $listQty: String!
-  ) {
-    shoppingSubmit(
-      itemName: $itemName
-      note: $note
-      unit: $unit
-      category: $category
-      listQty: $listQty
-    ) {
-      success
-    }
-  }
-`;
-
-const SHOPPING_UPDATE = gql`
-  mutation shopUpdate(
-    $itemId: Int!
-    $itemName: String!
-    $note: String
-    $unit: String
-    $category: String
-    $listQty: Int!
-  ) {
-    shoppingUpdate(
-      itemId: $itemId
-      itemName: $itemName
-      note: $note
-      unit: $unit
-      category: $category
-      listQty: $listQty
-    ) {
-      success
-    }
-  }
-`;
+import { SHOPPING_UPDATE, SHOPPING_SUBMIT } from '../../Queries/Queries';
 
 export const AddItem = () => {
   const { refreshShoppingItems } = useShoppingActions();

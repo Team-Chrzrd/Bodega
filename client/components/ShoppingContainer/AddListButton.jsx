@@ -1,23 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addListQty } from '../../store/actions/shoppingActions';
 import { useMutation, gql } from '@apollo/react-hooks';
-
-const SHOPPING_LIST_UP = gql`
-  mutation ShoppingListUp($itemId: Int!) {
-    shoppingListUp(itemId: $itemId) {
-      success
-    }
-  }
-`;
+import { SHOPPING_LIST_UP } from '../../Queries/Queries';
+import useShoppingActions from '../../hooks/useShoppingActions';
 
 //Increments List Quantity
 const AddListButton = ({ _id, refreshItems }) => {
-  const dispatch = useDispatch();
+  const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingListUp] = useMutation(SHOPPING_LIST_UP, {
     onCompleted: () => {
-      refreshItems();
+      refreshShoppingItems();
     },
   });
 

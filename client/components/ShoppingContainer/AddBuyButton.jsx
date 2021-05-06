@@ -1,18 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useMutation, gql } from '@apollo/react-hooks';
+import { SHOPPING_BUY_UP } from '../../Queries/Queries';
 import useShoppingActions from '../../hooks/useShoppingActions';
 
-const SHOPPING_BUY_UP = gql`
-  mutation ShoppingBuyUp($itemId: Int!) {
-    shoppingBuyUp(itemId: $itemId) {
-      success
-    }
-  }
-`;
 // Increments Required stock QTY
 const AddBuyButton = ({ _id }) => {
-  const dispatch = useDispatch();
   const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingBuyUp] = useMutation(SHOPPING_BUY_UP, {

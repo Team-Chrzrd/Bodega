@@ -1,22 +1,34 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { addFromPantry } from "../../store/actions/shoppingActions";
+import React from 'react';
+import { useMutation, gql } from '@apollo/react-hooks';
+import { ADD_FROM_PANTRY } from '../../Queries/Queries';
+import useShoppingActions from '../../hooks/useShoppingActions';
 
-//Adds pantry item to shopping list with proper 
+// Increments Required stock QTY
 const AddFromPantryBtn = ({ _id, showAlert }) => {
-  const dispatch = useDispatch();
-  const addToList = () => {
-    dispatch(addFromPantry(_id));
-    showAlert(true);
+  const { refreshShoppingItems } = useShoppingActions();
+
+  const [shoppingAddFromPantry] = useMutation(ADD_FROM_PANTRY, {
+    onCompleted: () => {
+      showAlert(true);
+      refreshShoppingItems();
+    },
+  });
+
+  const onButtonClick = () => {
+    shoppingAddFromPantry({
+      variables: { itemId: _id },
+    });
   };
+
+  //Adds pantry item to shopping list with proper
   return (
     <>
       <div>
         <button
-          onClick={addToList}
-          type="button"
-          className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          style={{ transition: "all .15s ease" }}
+          onClick={onButtonClick}
+          type='button'
+          className='inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          style={{ transition: 'all .15s ease' }}
         >
           Add to List
         </button>
@@ -24,6 +36,5 @@ const AddFromPantryBtn = ({ _id, showAlert }) => {
     </>
   );
 };
-
 
 export default AddFromPantryBtn;
