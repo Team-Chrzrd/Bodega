@@ -45,7 +45,7 @@ module.exports = gql`
     shoppingListUp(itemId: Int!): SuccessResponse
     shoppingListDown(itemId: Int!): SuccessResponse
     shoppingRemove(itemId: Int!): SuccessResponse
-    shoppingAddFromPantry(itemId: Int!): SuccessResponse
+    shoppingAddFromPantry(itemId: Int!, qty: Int, par: Int): SuccessResponse
     shoppingCheckout: SuccessResponse
   }
 `;

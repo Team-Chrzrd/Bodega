@@ -4,7 +4,7 @@ import { SHOPPING_LIST_UP } from '../../Queries/Queries';
 import useShoppingActions from '../../hooks/useShoppingActions';
 
 //Increments List Quantity
-const AddListButton = ({ _id, refreshItems }) => {
+const AddListButton = ({ _id }) => {
   const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingListUp] = useMutation(SHOPPING_LIST_UP, {

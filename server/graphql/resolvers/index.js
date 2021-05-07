@@ -1,4 +1,4 @@
 const shoppingResolvers = require('./shopping');
-// const pantryResolvers = require('./pantry')
+const pantryResolvers = require('./pantry');
 
-module.exports = [shoppingResolvers];
+module.exports = [shoppingResolvers, pantryResolvers];

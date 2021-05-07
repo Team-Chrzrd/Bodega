@@ -48,14 +48,16 @@ const PANTRY_SUBMIT = gql`
     $note: String
     $unit: String
     $category: String
-    $listQty: String!
+    $qty: String!
+    $par: String!
   ) {
     pantrySubmit(
       itemName: $itemName
       note: $note
       unit: $unit
       category: $category
-      listQty: $listQty
+      qty: $qty
+      par: $par
     ) {
       success
     }
@@ -69,7 +71,8 @@ const PANTRY_UPDATE = gql`
     $note: String
     $unit: String
     $category: String
-    $listQty: Int!
+    $qty: Int!
+    $par: Int!
   ) {
     pantryUpdate(
       itemId: $itemId
@@ -77,7 +80,8 @@ const PANTRY_UPDATE = gql`
       note: $note
       unit: $unit
       category: $category
-      listQty: $listQty
+      qty: $qty
+      par: $par
     ) {
       success
     }
@@ -100,6 +104,22 @@ const SHOPPING_BUY_DOWN = gql`
   }
 `;
 
+const PANTRY_QTY_UP = gql`
+  mutation panQtyUp($itemId: Int!) {
+    pantryQtyUp(itemId: $itemId) {
+      success
+    }
+  }
+`;
+
+const PANTRY_QTY_DOWN = gql`
+  mutation panQtyDown($itemId: Int!) {
+    pantryQtyDown(itemId: $itemId) {
+      success
+    }
+  }
+`;
+
 const SHOPPING_LIST_UP = gql`
   mutation ShoppingListUp($itemId: Int!) {
     shoppingListUp(itemId: $itemId) {
@@ -116,9 +136,33 @@ const SHOPPING_LIST_DOWN = gql`
   }
 `;
 
+const PANTRY_PAR_UP = gql`
+  mutation panParUp($itemId: Int!) {
+    pantryParUp(itemId: $itemId) {
+      success
+    }
+  }
+`;
+
+const PANTRY_PAR_DOWN = gql`
+  mutation panParDown($itemId: Int!) {
+    pantryParDown(itemId: $itemId) {
+      success
+    }
+  }
+`;
+
 const SHOPPING_REMOVE = gql`
   mutation ShoppingRemove($itemId: Int!) {
     shoppingRemove(itemId: $itemId) {
+      success
+    }
+  }
+`;
+
+const PANTRY_REMOVE = gql`
+  mutation panRemove($itemId: Int!) {
+    pantryRemove(itemId: $itemId) {
       success
     }
   }
@@ -133,8 +177,8 @@ const SHOPPING_CHECKOUT = gql`
 `;
 
 const ADD_FROM_PANTRY = gql`
-  mutation AddFromPan($itemId: Int!) {
-    shoppingAddFromPantry(itemId: $itemId) {
+  mutation AddFromPan($itemId: Int!, $qty: Int, $par: Int) {
+    shoppingAddFromPantry(itemId: $itemId, qty: $qty, par: $par) {
       success
     }
   }
@@ -152,4 +196,9 @@ export {
   SHOPPING_REMOVE,
   SHOPPING_CHECKOUT,
   ADD_FROM_PANTRY,
+  PANTRY_QTY_UP,
+  PANTRY_QTY_DOWN,
+  PANTRY_PAR_UP,
+  PANTRY_PAR_DOWN,
+  PANTRY_REMOVE,
 };

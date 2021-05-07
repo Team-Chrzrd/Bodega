@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@apollo/react-hooks';
-
-import {
-  addPantryItem,
-  updatePantryItem,
-} from '../../store/actions/pantryActions.js';
 import { displayEditor } from '../../store/actions/uiActions.js';
 import useShoppingActions from '../../hooks/useShoppingActions';
-import { SHOPPING_UPDATE, SHOPPING_SUBMIT } from '../../Queries/Queries';
+import usePantryActions from '../../hooks/usePantryActions.js';
+import {
+  SHOPPING_UPDATE,
+  SHOPPING_SUBMIT,
+  PANTRY_UPDATE,
+  PANTRY_SUBMIT,
+} from '../../Queries/Queries';
 
 export const AddItem = () => {
   const { refreshShoppingItems } = useShoppingActions();
+  const { refreshPantryItems } = usePantryActions();
 
   const [shoppingSubmit] = useMutation(SHOPPING_SUBMIT, {
     onCompleted: () => {
@@ -21,6 +23,17 @@ export const AddItem = () => {
   const [shoppingUpdate] = useMutation(SHOPPING_UPDATE, {
     onCompleted: () => {
       refreshShoppingItems();
+    },
+  });
+
+  const [pantrySubmit] = useMutation(PANTRY_SUBMIT, {
+    onCompleted: () => {
+      refreshPantryItems();
+    },
+  });
+  const [pantryUpdate] = useMutation(PANTRY_UPDATE, {
+    onCompleted: () => {
+      refreshPantryItems();
     },
   });
 
@@ -69,8 +82,9 @@ export const AddItem = () => {
       list_qty,
       category,
       note,
-      qty: list_qty,
+      qty: pantryQty,
       par,
+      pantryQty,
     };
     if (displayShopping) {
       shoppingSubmit({
@@ -84,7 +98,16 @@ export const AddItem = () => {
       });
     } //if the user is clicked on the shopping list tab, send to shopping list DB
     else if (displayPantry) {
-      dispatch(addPantryItem(dataSet));
+      pantrySubmit({
+        variables: {
+          itemName: item_name,
+          note,
+          unit,
+          category,
+          qty: dataSet.qty,
+          par,
+        },
+      });
     } //if the user is clicked on the pantry list tab, send to shopping list DB
     hideModal();
   };
@@ -137,8 +160,6 @@ export const AddItem = () => {
       qty: pantryQty,
     };
     if (displayShopping) {
-      console.log(editItem);
-      console.log('type', typeof editItem.list_qty);
       shoppingUpdate({
         variables: {
           itemId: editItem._id,
@@ -150,7 +171,19 @@ export const AddItem = () => {
         },
       });
     } //if the user is clicked on the shopping list tab, send to shopping list DB
-    if (displayPantry) dispatch(updatePantryItem(editItem)); //if the user is clicked on the pantry list tab, send to shopping list DB
+    if (displayPantry) {
+      pantryUpdate({
+        variables: {
+          itemId: editItem._id,
+          itemName: editItem.item_name,
+          note: editItem.note,
+          unit: editItem.unit,
+          category: editItem.category,
+          qty: editItem.qty,
+          par: editItem.par,
+        },
+      });
+    } //if the user is clicked on the pantry list tab, send to shopping list DB
     hideModal(); //hide modal after user saves changes
   };
 

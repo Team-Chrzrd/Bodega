@@ -12,4 +12,4 @@ const rootType = gql`
   }
 `;
 
-module.exports = [rootType, shoppingType];
+module.exports = [rootType, shoppingType, pantryType];

@@ -28,6 +28,7 @@ function useShoppingActions() {
   }, [data]);
 
   return {
+    data,
     shoppingItems,
     refreshShoppingItems: refetch,
   };

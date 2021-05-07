@@ -4,7 +4,7 @@ import { ADD_FROM_PANTRY } from '../../Queries/Queries';
 import useShoppingActions from '../../hooks/useShoppingActions';
 
 // Increments Required stock QTY
-const AddFromPantryBtn = ({ _id, showAlert }) => {
+const AddFromPantryBtn = ({ _id, showAlert, qty, par }) => {
   const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingAddFromPantry] = useMutation(ADD_FROM_PANTRY, {
@@ -16,7 +16,7 @@ const AddFromPantryBtn = ({ _id, showAlert }) => {
 
   const onButtonClick = () => {
     shoppingAddFromPantry({
-      variables: { itemId: _id },
+      variables: { itemId: _id, qty, par },
     });
   };
 

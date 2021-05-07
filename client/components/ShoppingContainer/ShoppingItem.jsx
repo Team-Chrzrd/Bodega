@@ -10,7 +10,7 @@ import AddBuyButton from './AddBuyButton.jsx';
 //Individual shopping item component
 
 //Pulls in newItem from container as prop(destructured as param)
-const ShoppingItem = ({ newItem, refreshItems }) => {
+const ShoppingItem = ({ newItem }) => {
   const { displayShopping } = useSelector((state) => state.ui);
 
   const {
@@ -56,8 +56,8 @@ const ShoppingItem = ({ newItem, refreshItems }) => {
                 <div className='ml-3'>{unit}</div>
               </div>
               <div className='flex flex-row'>
-                <MinusBuyButton _id={_id} refreshItems={refreshItems} />
-                <AddBuyButton _id={_id} refreshItems={refreshItems} />
+                <MinusBuyButton _id={_id} />
+                <AddBuyButton _id={_id} />
               </div>
             </div>
 
@@ -72,15 +72,15 @@ const ShoppingItem = ({ newItem, refreshItems }) => {
                 <div className='ml-3'>{unit}</div>
               </div>
               <div className='flex flex-row'>
-                <MinusListButton _id={_id} refreshItems={refreshItems} />
-                <AddListButton _id={_id} refreshItems={refreshItems} />
+                <MinusListButton _id={_id} />
+                <AddListButton _id={_id} />
               </div>
             </div>
           </div>
 
           <div className=' flex flex-column justify-center items-center mt-2 pr-5'>
-            <UpdateButton item={newItem} refreshItems={refreshItems} />
-            <DeleteButton _id={_id} refreshItems={refreshItems} />
+            <UpdateButton item={newItem} />
+            <DeleteButton _id={_id} />
           </div>
         </div>
       </li>

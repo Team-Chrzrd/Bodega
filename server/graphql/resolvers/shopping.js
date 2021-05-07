@@ -3,23 +3,56 @@ const db = require('../../db.js');
 module.exports = {
   Query: {
     async getItems(root, args, context) {
-      const qStr =
-        'SELECT shopping.*, pantry.qty AS pantry_qty, pantry.par AS pantry_par FROM shopping LEFT OUTER JOIN pantry ON shopping.pantry_id = pantry._id;';
       try {
-        const qres = await db.query(qStr);
+        // const qStr =
+        //   "DELETE FROM shopping WHERE user_id = '1' AND list_qty <= 0 RETURNING *;";
+        // await db.query(qStr);
 
-        return qres.rows;
+        // const qStr2 = "SELECT * FROM pantry WHERE user_id = '1' AND par > qty;";
+        // const qres2 = await db.query(qStr2);
+
+        // const importList = qres2.rows;
+
+        // importList.forEach(async (newItem) => {
+        //   const qStr3 = `SELECT * FROM shopping WHERE pantry_id = ${newItem._id};`;
+        //   const qres3 = await db.query(qStr3);
+
+        //   const pantryItem = qres3.rows[0] ? qres3.rows[0] : false;
+        //   if (!pantryItem) {
+        //     qStr4 = `INSERT INTO shopping (user_id, pantry_id, item_name, note, unit, list_qty, buy_qty, category)
+        //                   VALUES ('1','${newItem._id}', '${
+        //       newItem.item_name
+        //     }', '${newItem.note}', '${newItem.unit}',
+        //               '${newItem.par - newItem.qty}', 0, '${
+        //       newItem.category
+        //     }');`;
+        //     await db.query(qStr4);
+        //   } else {
+        //     const qStr5 = `UPDATE shopping
+        //               SET list_qty = ${Math.max(
+        //                 pantryItem.list_qty,
+        //                 newItem.par - newItem.qty
+        //               )}
+        //               WHERE pantry_id = ${newItem._id};`;
+        //     await db.query(qStr5);
+        //   }
+        // });
+
+        const qStr6 =
+          'SELECT shopping.*, pantry.qty AS pantry_qty, pantry.par AS pantry_par FROM shopping LEFT OUTER JOIN pantry ON shopping.pantry_id = pantry._id;';
+        const qres6 = await db.query(qStr6);
+        return qres6.rows;
       } catch (error) {
         console.log('error in shopping.js/getItems', error);
         return [];
       }
     },
+
     async getItem(root, args, context) {
       const item_id = args.itemId;
       const qStr = `SELECT shopping.*, pantry.qty AS pantry_qty, pantry.par AS pantry_par FROM shopping LEFT OUTER JOIN pantry ON shopping.pantry_id = pantry._id WHERE shopping._id = ${item_id};`;
       try {
         const qres = await db.query(qStr);
-        console.log(qres.rows);
         return qres.rows;
       } catch (error) {
         console.log('error in shopping.js/getItems', error);
@@ -174,21 +207,26 @@ module.exports = {
 
     async shoppingAddFromPantry(_, args) {
       try {
-        const item_id = args.itemId;
-        qStr = `SELECT * FROM shopping WHERE pantry_id = ${item_id};`;
+        const { itemId, qty, par } = args;
+        console.log(itemId);
+        const thing = 3;
+        // const required = par - qty;
+        qStr = `SELECT * FROM shopping WHERE pantry_id = ${itemId};`;
         const qres = await db.query(qStr);
-        const pantryItem = qres.rows[0];
+        const pantryItem = qres.rows[0] ? qres.rows[0] : false;
+        console.log('pantry Item', pantryItem);
+
         if (!pantryItem) {
           const qStr = `INSERT INTO shopping (user_id, pantry_id, item_name, note, unit, list_qty, buy_qty, category)
-            SELECT user_id, _id, item_name, note, unit, '1', '0', category
+            SELECT user_id, _id, item_name, note, unit, '${par}', '0', category
             FROM pantry
-            WHERE _id = ${item_id} RETURNING *;`;
+            WHERE _id = ${itemId} RETURNING *;`;
           await db.query(qStr);
           return { success: true };
         } else {
           const qStr = `UPDATE shopping
             SET list_qty = '${pantryItem.list_qty + 1}'
-            WHERE pantry_id = ${item_id};`;
+            WHERE pantry_id = ${itemId};`;
           await db.query(qStr);
           return { success: true };
         }

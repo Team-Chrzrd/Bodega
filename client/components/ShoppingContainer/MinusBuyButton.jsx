@@ -4,7 +4,7 @@ import { SHOPPING_BUY_DOWN } from '../../Queries/Queries';
 import useShoppingActions from '../../hooks/useShoppingActions';
 
 //Decrements required stock QTY
-const MinusBuyButton = ({ _id, refreshItems }) => {
+const MinusBuyButton = ({ _id }) => {
   const { refreshShoppingItems } = useShoppingActions();
 
   const [shoppingBuyDown] = useMutation(SHOPPING_BUY_DOWN, {
