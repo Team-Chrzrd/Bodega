@@ -3,15 +3,9 @@ import { useMutation, gql } from '@apollo/react-hooks';
 import { PANTRY_QTY_UP } from '../../Queries/Queries';
 import usePantryActions from '../../hooks/usePantryActions';
 
-<<<<<<< HEAD
 // Increments Required stock QTY
-const AddButtonPantry = ({ _id }) => {
+const AddButtonPantry = ({ _id, item_name }) => {
   const { refreshPantryItems } = usePantryActions();
-=======
-//Increments In Stock qty in pantry
-const AddButtonPantry = ({ _id, item_name}) => {
-  const dispatch = useDispatch();
->>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
 
   const [pantryQtyUp] = useMutation(PANTRY_QTY_UP, {
     onCompleted: () => {
@@ -30,17 +24,10 @@ const AddButtonPantry = ({ _id, item_name}) => {
     <div>
       <span className='relative z-0 inline-flex shadow-md rounded-md'>
         <button
-<<<<<<< HEAD
           onClick={onButtonClick}
           id='add-btn'
           type='button'
-          className='-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500'
-=======
-          onClick={() => dispatch(addQty(_id))}
-          id="add-btn"
-          type="button"
-          className= {`-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pantryStockAdd${item_name}`}
->>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
+          className={`-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pantryStockAdd${item_name}`}
         >
           <span className='sr-only'>Next</span>
           <svg
