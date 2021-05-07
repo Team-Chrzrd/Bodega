@@ -28,7 +28,7 @@ const ShoppingItem = ({ newItem }) => {
   return (
     <>
       <li>
-        <div className=' flex flex-row justify-between px-4 py-4 sm:px-6'>
+        <div className={`flex flex-row justify-between px-4 py-4 sm:px-6 shoppingItem ${item_name}`}>
           <div className='flex flex-column items-center justify-between w-1/4'>
             <p className='flex items-center text-sm text-gray-500'>
               {category}
@@ -49,15 +49,26 @@ const ShoppingItem = ({ newItem }) => {
               <div>
                 <strong>Cart Qty</strong>
               </div>
+<<<<<<< HEAD
               <div className='flex flex-row justify-center items-center'>
                 <div className='text-3xl font-semibold text-blue-700  truncate'>
+=======
+              <div className="flex flex-row justify-center items-center">
+                <div className={`text-3xl font-semibold text-blue-700  truncate cartQuantity${item_name}`}>
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                   {buy_qty}
                 </div>
                 <div className='ml-3'>{unit}</div>
               </div>
+<<<<<<< HEAD
               <div className='flex flex-row'>
                 <MinusBuyButton _id={_id} />
                 <AddBuyButton _id={_id} />
+=======
+              <div className={`flex flex-row addMinus${item_name}`}>
+                <MinusBuyButton _id={_id} item_name={item_name} />
+                <AddBuyButton _id={_id} item_name={item_name} />
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
               </div>
             </div>
 
@@ -65,22 +76,39 @@ const ShoppingItem = ({ newItem }) => {
               <div>
                 <strong>Required Qty</strong>
               </div>
+<<<<<<< HEAD
               <div className='flex flex-row justify-center items-center'>
                 <div className='text-3xl font-semibold text-blue-700  truncate'>
+=======
+              <div className="flex flex-row justify-center items-center">
+                <div className={`text-3xl font-semibold text-blue-700  truncate reqQuantity${item_name}`}>
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                   {list_qty}
                 </div>
                 <div className='ml-3'>{unit}</div>
               </div>
+<<<<<<< HEAD
               <div className='flex flex-row'>
                 <MinusListButton _id={_id} />
                 <AddListButton _id={_id} />
+=======
+              <div className="flex flex-row">
+                <MinusListButton _id={_id} item_name={item_name} />
+                <AddListButton _id={_id} item_name={item_name} />
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
               </div>
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className=' flex flex-column justify-center items-center mt-2 pr-5'>
             <UpdateButton item={newItem} />
             <DeleteButton _id={_id} />
+=======
+          <div className=" flex flex-column justify-center items-center mt-2 pr-5">
+            <UpdateButton item={newItem} _id={_id} item_name={item_name}/>
+            <DeleteButton _id={_id} item_name={item_name}/>
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
           </div>
         </div>
       </li>

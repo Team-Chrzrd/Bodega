@@ -21,12 +21,12 @@ const ShoppingContainer = () => {
   // const shoppingItems = data?.getItems || [];
   return (
     <div>
-      <div className='bg-white shadow overflow-hidden sm:rounded-md'>
+      <div className='bg-white shadow overflow-hidden sm:rounded-md ShoppingContainer'>
         <ul className='divide-y divide-gray-200'>
           {shoppingItems
             .sort((a, b) => sortItem(a, b))
             .map((item, i) => {
-              return <ShoppingItem key={`item${i}`} newItem={item} />;
+              return <ShoppingItem key={`item_${i}`} newItem={item} />;
             })}
         </ul>
       </div>
