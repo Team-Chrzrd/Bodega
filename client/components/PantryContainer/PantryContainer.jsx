@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import PantryItem from "./PantryItem.jsx";
-import { getPantryItems } from "../../store/actions/pantryActions.js";
+import React, { useEffect } from 'react';
+import PantryItem from './PantryItem.jsx';
+import usePantryActions from '../../hooks/usePantryActions';
 
 //Container for all pantry items
 const PantryContainer = () => {
-  const pantryItems = useSelector((state) => state.pantry.pantryList);
-  const dispatch = useDispatch();
+  const { pantryItems, data, error } = usePantryActions();
 
-  useEffect(() => {
-    dispatch(getPantryItems());
-  }, []);
   const sortItem = (a, b) => {
     if (a.item_name < b.item_name) {
       return -1;
@@ -23,8 +18,8 @@ const PantryContainer = () => {
 
   return (
     <div>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md PantryContainer">
-        <ul className="divide-y divide-gray-200">
+      <div className='bg-white shadow overflow-hidden sm:rounded-md PantryContainer'>
+        <ul className='divide-y divide-gray-200'>
           {pantryItems
             .sort((a, b) => sortItem(a, b))
             .map((item, i) => {

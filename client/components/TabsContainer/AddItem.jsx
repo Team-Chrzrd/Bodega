@@ -1,25 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation } from '@apollo/react-hooks';
+import { displayEditor } from '../../store/actions/uiActions.js';
+import useShoppingActions from '../../hooks/useShoppingActions';
+import usePantryActions from '../../hooks/usePantryActions.js';
 import {
-  addShoppingItem,
-  updateShoppingItem,
-} from "../../store/actions/shoppingActions.js";
-import {
-  addPantryItem,
-  updatePantryItem,
-} from "../../store/actions/pantryActions.js";
-import { displayEditor } from "../../store/actions/uiActions.js";
+  SHOPPING_UPDATE,
+  SHOPPING_SUBMIT,
+  PANTRY_UPDATE,
+  PANTRY_SUBMIT,
+} from '../../Queries/Queries';
 
 export const AddItem = () => {
+  const { refreshShoppingItems } = useShoppingActions();
+  const { refreshPantryItems } = usePantryActions();
+
+  const [shoppingSubmit] = useMutation(SHOPPING_SUBMIT, {
+    onCompleted: () => {
+      refreshShoppingItems();
+    },
+  });
+  const [shoppingUpdate] = useMutation(SHOPPING_UPDATE, {
+    onCompleted: () => {
+      refreshShoppingItems();
+    },
+  });
+
+  const [pantrySubmit] = useMutation(PANTRY_SUBMIT, {
+    onCompleted: () => {
+      refreshPantryItems();
+    },
+  });
+  const [pantryUpdate] = useMutation(PANTRY_UPDATE, {
+    onCompleted: () => {
+      refreshPantryItems();
+    },
+  });
+
   //setting component state
-  const [item_name, setItemName] = useState("");
+  const [item_name, setItemName] = useState('');
   const [list_qty, setQuantity] = useState(0);
-  const [category, setCategory] = useState("Dairy");
-  const [unit, setUnit] = useState("");
-  const [note, setNote] = useState("");
-  const [par, setPar] = useState("");
-  const [pantryQty, setPantryQty] = useState("");
+  const [category, setCategory] = useState('--');
+  const [unit, setUnit] = useState('');
+  const [note, setNote] = useState('');
+  const [par, setPar] = useState('');
+  const [pantryQty, setPantryQty] = useState('');
 
   //onClick Function (Save Changes) to sent user data
   const dispatch = useDispatch();
@@ -31,6 +56,12 @@ export const AddItem = () => {
   const { displayModal, isEdit, displayShopping, displayPantry } = useSelector(
     (state) => state.ui
   );
+  //function to submit the item form
+  // const onButtonClick = () => {
+  //   shoppingSubmit({
+  //     variables: { note, unit, category, listQty: list_qty },
+  //   });
+  // };
 
   // sets ADD ITEM Modal odal state to display
   const showModal = () => {
@@ -51,14 +82,32 @@ export const AddItem = () => {
       list_qty,
       category,
       note,
-      qty: list_qty,
+      qty: pantryQty,
       par,
+      pantryQty,
     };
     if (displayShopping) {
-      dispatch(addShoppingItem(dataSet));
+      shoppingSubmit({
+        variables: {
+          itemName: item_name,
+          note,
+          unit,
+          category,
+          listQty: list_qty,
+        },
+      });
     } //if the user is clicked on the shopping list tab, send to shopping list DB
     else if (displayPantry) {
-      dispatch(addPantryItem(dataSet));
+      pantrySubmit({
+        variables: {
+          itemName: item_name,
+          note,
+          unit,
+          category,
+          qty: dataSet.qty,
+          par,
+        },
+      });
     } //if the user is clicked on the pantry list tab, send to shopping list DB
     hideModal();
   };
@@ -71,13 +120,13 @@ export const AddItem = () => {
   //This function sets the component state, when the updated button is clicked.This is so that the place holders and values are pre populated for the user when they go to edit.
   const ifEditTrue = () => {
     //clears the input fields if the user clicks the 'Add item' button, so that previous data is not in the placeholders.
-    let item_name = "";
-    let unit = "";
+    let item_name = '';
+    let unit = '';
     let list_qty = 0;
-    let category = "";
-    let note = "";
-    let par = "";
-    let qty = "";
+    let category = '';
+    let note = '';
+    let par = '';
+    let qty = '';
     //sets the input fields values from the item object, if the user clicked on the update button.
     if (isEdit) {
       category = updatedItem.category;
@@ -110,51 +159,82 @@ export const AddItem = () => {
       par,
       qty: pantryQty,
     };
-    if (displayShopping) dispatch(updateShoppingItem(editItem)); //if the user is clicked on the shopping list tab, send to shopping list DB
-    if (displayPantry) dispatch(updatePantryItem(editItem)); //if the user is clicked on the pantry list tab, send to shopping list DB
+    if (displayShopping) {
+      shoppingUpdate({
+        variables: {
+          itemId: editItem._id,
+          itemName: editItem.item_name,
+          note: editItem.note,
+          unit: editItem.unit,
+          category: editItem.category,
+          listQty: editItem.list_qty,
+        },
+      });
+    } //if the user is clicked on the shopping list tab, send to shopping list DB
+    if (displayPantry) {
+      pantryUpdate({
+        variables: {
+          itemId: editItem._id,
+          itemName: editItem.item_name,
+          note: editItem.note,
+          unit: editItem.unit,
+          category: editItem.category,
+          qty: editItem.qty,
+          par: editItem.par,
+        },
+      });
+    } //if the user is clicked on the pantry list tab, send to shopping list DB
     hideModal(); //hide modal after user saves changes
   };
 
   return (
     <>
       <button
-        type="button"
-        className="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        style={{ transition: "all .15s ease" }}
+        type='button'
+        className='inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+        style={{ transition: 'all .15s ease' }}
         onClick={showModal} //show modal after user clicks add item button
       >
         Add Item
       </button>
       {displayModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+          <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
+            <div className='relative w-auto my-6 mx-auto max-w-3xl'>
               {/*content*/}
+<<<<<<< HEAD
+              <div className='border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none'>
+=======
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none addEditModal">
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    {isEdit ? "Edit Item" : "Add Item"}
+                <div className='flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t'>
+                  <h3 className='text-3xl font-semibold'>
+                    {isEdit ? 'Edit Item' : 'Add Item'}
                   </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className='p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none'
                     onClick={hideModal}
                   >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                    <span className='bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none'>
                       ×
                     </span>
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex flex-row flex-auto justify-center">
-                  <div className="m-4 flex flex-col items-center">
+                <div className='relative p-6 flex flex-row flex-auto justify-center'>
+                  <div className='m-4 flex flex-col items-center'>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className='block text-sm font-medium text-gray-700'>
                         Item Name
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className='mt-1 relative rounded-md shadow-sm'>
                         <input
+<<<<<<< HEAD
+                          className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+=======
                           className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md addItemInput"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                           placeholder={item_name}
                           value={item_name}
                           onChange={(e) => setItemName(e.target.value)}
@@ -163,13 +243,18 @@ export const AddItem = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className='block text-sm font-medium text-gray-700'>
                         Quantity
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className='mt-1 relative rounded-md shadow-sm'>
                         <input
+<<<<<<< HEAD
+                          className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+                          type='text'
+=======
                           className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md quantityInput"
                           type="text"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                           placeholder={displayShopping ? list_qty : pantryQty} //shows the correct quantity based on whether the user in in the shopping tab or pantry tab
                           value={displayShopping ? list_qty : pantryQty}
                           onChange={(e) =>
@@ -183,13 +268,18 @@ export const AddItem = () => {
 
                     {displayPantry && (
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className='block text-sm font-medium text-gray-700'>
                           Stock Amount
                         </label>
-                        <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className='mt-1 relative rounded-md shadow-sm'>
                           <input
+<<<<<<< HEAD
+                            className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+                            type='text'
+=======
                             className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md stockAmount"
                             type="text"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                             placeholder={par}
                             value={par}
                             onChange={(e) => setPar(e.target.value)}
@@ -197,15 +287,19 @@ export const AddItem = () => {
                         </div>
                       </div>
                     )}
-                    <div className="w-full">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div className='w-full'>
+                      <label className='block text-sm font-medium text-gray-700'>
                         Unit
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className='mt-1 relative rounded-md shadow-sm'>
                         <select
-                          name="types"
+                          name='types'
                           placeholder={unit}
+<<<<<<< HEAD
+                          className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+=======
                           className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md unitInput"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                           value={unit}
                           onChange={(e) => setUnit(e.target.value)}
                         >
@@ -222,15 +316,21 @@ export const AddItem = () => {
                       </div>
                     </div>
 
-                    <div className="w-full">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div className='w-full'>
+                      <label className='block text-sm font-medium text-gray-700'>
                         Category
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className='mt-1 relative rounded-md shadow-sm'>
                         <select
+<<<<<<< HEAD
+                          name='types'
+                          placeholder='Dairy'
+                          className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+=======
                           name="types"
                           placeholder="Dairy"
                           className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md categoryInput"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                         >
@@ -253,15 +353,22 @@ export const AddItem = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className='block text-sm font-medium text-gray-700'>
                         Notes
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className='mt-1 relative rounded-md shadow-sm'>
                         <input
+<<<<<<< HEAD
+                          className='focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md'
+                          type='text'
+                          placeholder='Add Notes Here'
+                          step='0.5'
+=======
                           className="focus:ring-indigo-500 focus:border-indigo-500 block m-3 w-full pr-12 sm:text-sm border-gray-300 rounded-md notesInput"
                           type="text"
                           placeholder="Add Notes Here"
                           step="0.5"
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                           value={note}
                           onChange={(e) => setNote(e.target.value)}
                         ></input>
@@ -270,19 +377,25 @@ export const AddItem = () => {
                   </div>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                <div className='flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b'>
                   <button
+<<<<<<< HEAD
+                    className='text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1'
+                    type='button'
+                    style={{ transition: 'all .15s ease' }}
+=======
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 closeButton"
                     type="button"
                     style={{ transition: "all .15s ease" }}
+>>>>>>> 2655e1d845f82fc1b2295aab0550be16c3c980ac
                     onClick={hideModal}
                   >
                     Close
                   </button>
                   <button
                     onClick={isEdit ? sendEdit : sendNewItem} //if the user clicks on the update button, is Edit will be true and will call the edit function, if false (user clicks on Add item button) calls the send new item function
-                    className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-                    type="button"
+                    className='bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1'
+                    type='button'
                   >
                     Save Changes
                   </button>
@@ -290,7 +403,7 @@ export const AddItem = () => {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
         </>
       ) : null}
     </>
