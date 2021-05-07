@@ -7,7 +7,7 @@ module.exports = gql`
     item_name: String!
     note: String
     unit: String!
-    qty: Int!
+    qty: Int
     category: String
     par: Int
   }
