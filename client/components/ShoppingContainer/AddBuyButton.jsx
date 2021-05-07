@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import { addBuyQty } from "../../store/actions/shoppingActions";
 
 // Increments Required stock QTY
-const AddBuyButton = ({ _id }) => {
+const AddBuyButton = ({ _id, item_name }) => {
   const dispatch = useDispatch();
   
   return (
     <div>
       <span className="relative z-0 inline-flex shadow-md rounded-md">
-        <button onClick={() => dispatch(addBuyQty(_id))} id="add-btn" type="button" className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+        <button onClick={() => dispatch(addBuyQty(_id))} id="add-btn" type="button" className={`-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 addBuy${item_name}`}>
           <span className="sr-only">Next</span>
           <svg
             className="w-6 h-6"

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { minusPar } from "../../store/actions/pantryActions";
 
 //Decrements Required Qty in pantry
-const MinusParPantry = ({ _id }) => {
+const MinusParPantry = ({ _id, item_name }) => {
   const dispatch = useDispatch();
 
   return (
@@ -13,7 +13,8 @@ const MinusParPantry = ({ _id }) => {
           onClick={() => dispatch(minusPar(_id))}
           id="minus-btn"
           type="button"
-          className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-500 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          className= {`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-500 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pantryReqStockMinus${item_name}`}
+
         >
           <span className="sr-only">Previous</span>
           <svg

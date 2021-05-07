@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { addPar } from "../../store/actions/pantryActions";
 
 //Increments Required Qty in pantry
-const AddParPantry = ({ _id }) => {
+const AddParPantry = ({ _id, item_name}) => {
   const dispatch = useDispatch();
 
   return (
@@ -13,7 +13,7 @@ const AddParPantry = ({ _id }) => {
           onClick={() => dispatch(addPar(_id))}
           id="add-btn"
           type="button"
-          className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          className={`-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-red-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pantryReqStockAdd${item_name}`}
         >
           <span className="sr-only">Next</span>
           <svg
